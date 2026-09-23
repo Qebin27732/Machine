@@ -28,8 +28,8 @@ Transform:
   m_GameObject: {fileID: 3136638686581042460}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1.7204, y: -1.528, z: 0}
+  m_LocalScale: {x: 0.34213877, y: 0.32823825, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -46,6 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 724790aa4819e5445bd1d0798d95809f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CellAdapter
+  minScale: 0.1
+  maxScale: 0.5
+  scaleMutationRate: 0.15
+  colorMutationRate: 0.08
+  enableActiveCamouflage: 1
+  camouflageSpeed: 0.5
+  gameManager: {fileID: 0}
 --- !u!212 &6526682894991468544
 SpriteRenderer:
   serializedVersion: 3
@@ -95,12 +102,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3d6d7d96f3fcb7f49971f2af8fd2f13c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5.23, y: 4.71}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -140,5 +147,5 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Offset: {x: 0.12471761, y: -0.042763982}
+  m_Radius: 2.208329
