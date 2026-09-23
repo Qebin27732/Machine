@@ -5,19 +5,30 @@ public class GameManager : MonoBehaviour
 {
     [Header("UI")]
     public TextMeshProUGUI timerText;
+    public TextMeshProUGUI scoreText; // Referencia al texto de puntuación
     public float timeRemaining = 30f;
     private bool isGameActive = true;
+    private int score = 0; // Puntuación actual
 
     [Header("Spawner")]
     public GameObject cellPrefab;
-    public float spawnInterval = 10f;
+    public float spawnInterval = 5f;
     private float spawnTimer = 0f;
+
+    [Header("Datos de Adaptación (Machine Learning Simple)")]
+    public Color bestColor = Color.white;
+    public float bestScale = 1.0f;
+    private bool hasLearned = false;
+
+    void Start()
+    {
+        UpdateScoreUI();
+    }
 
     void Update()
     {
         if (!isGameActive) return;
 
-        // Temporizador de ronda
         if (timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
@@ -28,10 +39,9 @@ public class GameManager : MonoBehaviour
             timeRemaining = 0;
             isGameActive = false;
             UpdateTimerUI();
-            Debug.Log("¡Fin de la ronda!");
+            Debug.Log("¡Fin de la ronda! Evaluando adaptación de células supervivientes...");
         }
 
-        // Spawner automático de células
         spawnTimer += Time.deltaTime;
         if (spawnTimer >= spawnInterval)
         {
@@ -48,12 +58,49 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void UpdateScoreUI()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = "Eliminadas: " + score.ToString();
+        }
+    }
+
+    // Método para sumar puntos cuando el jugador elimina una célula
+    public void AddScore()
+    {
+        score++;
+        UpdateScoreUI();
+    }
+
     void SpawnCell()
     {
         if (cellPrefab == null) return;
 
-        // Posición aleatoria dentro de la vista de la cámara
         Vector2 randomPos = new Vector2(Random.Range(-6f, 6f), Random.Range(-3f, 3f));
-        Instantiate(cellPrefab, randomPos, Quaternion.identity);
+        GameObject newCell = Instantiate(cellPrefab, randomPos, Quaternion.identity);
+
+        CellAdapter cellAdapter = newCell.GetComponent<CellAdapter>();
+        if (cellAdapter != null)
+        {
+            cellAdapter.gameManager = this;
+
+            if (hasLearned)
+            {
+                cellAdapter.InitializeWithLearning(bestColor, bestScale);
+            }
+            else
+            {
+                cellAdapter.InitializeRandom();
+            }
+        }
+    }
+
+    public void RegisterSurvivingCell(Color survivingColor, float survivingScale)
+    {
+        bestColor = survivingColor;
+        bestScale = survivingScale;
+        hasLearned = true;
+        Debug.Log($"Célula superviviente registrada. Nuevo patrón base aprendido -> Color: {bestColor}, Escala: {bestScale}");
     }
 }
